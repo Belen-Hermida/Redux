@@ -3,8 +3,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { removeFavorite } from '../../store/favoritesSlice';
-import { HeartIcon } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export default function FavoritesPage() {
   const dispatch = useDispatch();
@@ -15,35 +16,56 @@ export default function FavoritesPage() {
     setHasMounted(true);
   }, []);
 
-  if (!hasMounted) return null; // Evita renderizar antes de que el cliente monte
+  if (!hasMounted) return null;
 
   if (favorites.length === 0) {
-    return <p className="text-center mt-8 text-gray-600">No favorites yet.</p>;
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-green-50 text-center">
+        <p className="text-xl text-gray-600 mb-4">No favorites yet.</p>
+        <Link
+          href="/productos"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-full transition duration-300"
+        >
+          Go to Products
+        </Link>
+      </div>
+    );
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">Your Favorite Characters</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6">
+      <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-8">
+        Your Favorite Characters
+      </h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {favorites.map(character => (
           <div
             key={character.id}
-            className="bg-white rounded shadow p-4 text-center hover:shadow-md transition-shadow relative"
+            className="relative bg-white rounded-3xl shadow-xl p-4 text-center hover:scale-[1.02] transition-transform duration-300"
           >
+            {/* Corazón */}
             <button
               onClick={() => dispatch(removeFavorite(character.id))}
-              className="absolute top-2 right-2"
+              className="absolute top-3 right-3"
               aria-label="Remove from favorites"
             >
-              <HeartIcon className="text-red-500 fill-red-500 w-6 h-6 hover:scale-110 transition-transform" />
+              <Heart
+                className="text-red-500 drop-shadow transition-transform hover:scale-110"
+                fill="red"
+                size={28}
+              />
             </button>
 
+            {/* Imagen */}
             <img
               src={character.image}
               alt={character.name}
-              className="w-full h-40 object-cover rounded mb-2"
+              className="w-32 h-32 object-cover rounded-full mx-auto mb-4 transition-transform hover:scale-105"
             />
-            <h2 className="text-lg font-semibold">{character.name}</h2>
+
+            {/* Nombre */}
+            <h2 className="text-xl font-semibold text-gray-800">{character.name}</h2>
           </div>
         ))}
       </div>

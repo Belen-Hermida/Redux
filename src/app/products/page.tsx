@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFavorite, removeFavorite } from '../../store/favoritesSlice';
 import { RootState } from '../../store/store';
 import { Heart } from 'lucide-react';
-import Link from 'next/link'; // ✅ IMPORTANTE
+import Link from 'next/link';
 
 interface Character {
   id: number;
@@ -37,30 +37,33 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">Rick and Morty Characters</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="p-6 bg-gradient-to-br from-blue-50 to-green-50 min-h-screen">
+      <h1 className="text-4xl font-extrabold text-center mb-8 text-green-700 drop-shadow-md">
+        Rick and Morty Characters
+      </h1>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {characters.map(character => (
           <div
             key={character.id}
-            className="relative bg-white rounded shadow p-4 hover:shadow-md transition-shadow"
+            className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 group overflow-hidden"
           >
-            {/* ✅ Agrega Link envolviendo la tarjeta */}
             <Link href={`/products/${character.id}`}>
               <div className="text-center cursor-pointer">
                 <img
                   src={character.image}
                   alt={character.name}
-                  className="w-full h-40 object-cover rounded mb-2"
+                  className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <h2 className="text-lg font-semibold">{character.name}</h2>
+                <h2 className="text-lg font-semibold text-gray-800 px-2 py-3 truncate group-hover:text-green-700">
+                  {character.name}
+                </h2>
               </div>
             </Link>
 
-            {/* Corazón por fuera del Link */}
             <Heart
-              size={24}
-              className={`absolute top-2 right-2 cursor-pointer ${
+              size={28}
+              className={`absolute top-3 right-3 cursor-pointer drop-shadow-md ${
                 isFavorite(character.id) ? 'text-red-500' : 'text-gray-400'
               }`}
               onClick={() => toggleFavorite(character)}
