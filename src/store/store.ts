@@ -20,7 +20,6 @@ const loadFromLocalStorage = () => {
   }
 };
 
-
 const saveToLocalStorage = (state: any) => {
   try {
     const serializedState = JSON.stringify(state.favorites.items);
@@ -37,6 +36,7 @@ export const store = configureStore({
     favorites: favoritesReducer,
   },
   preloadedState,
+  devTools: process.env.NODE_ENV !== 'production', // ✅ Habilita Redux DevTools en desarrollo
 });
 
 store.subscribe(() => {
